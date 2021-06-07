@@ -1,4 +1,5 @@
 require('dotenv').config();
+var insafe = require('insafe');
 const express = require('express');
 const cors = require('cors');
 const dns=require('dns');
@@ -16,10 +17,7 @@ for(var i=0;i<5000;i++){
 
 function getlongfromshort(urls,shortin){
   for(var i=0;i<urls.length;i++){
-    //console.log(shortin);
-    //console.log(urls[i].short_url);
     if(urls[i].short_url ==  shortin) {
-      //console.log(urls[i].original_url);
       return urls[i].original_url;
       }
   }
@@ -47,19 +45,30 @@ app.get('/api/hello', function(req, res) {
 });
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+
+
+
+
 
 function inputurl(req,res){
+  console.log(req.body.url);
+  if (is_url(req.body.url)){
   dns.lookup(req.body.url,(error)=>{
     if (error){
       return res.json({error:'invalid url'});
     }
     else{
       myurls.push({original_url:req.body.url, short_url:shortnums[myurls.length]});
-      console.log(myurls[myurls.length-1]);
+      //console.log(myurls[myurls.length-1]);
       return res.json(myurls[myurls.length-1]);
     }
   });
+  }
+  else{
+    return res.json({error:'invalid url'});
+  }
+
 }
 
 
