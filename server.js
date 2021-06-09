@@ -1,5 +1,4 @@
 require('dotenv').config();
-var insafe = require('insafe');
 const express = require('express');
 const cors = require('cors');
 const dns=require('dns');
@@ -31,6 +30,8 @@ function getshortfromlong(urls,longin){
   return false;
 }
 
+
+
 app.use(cors());
 
 app.use('/public', express.static(`${process.cwd()}/public`));
@@ -52,23 +53,28 @@ app.use(express.urlencoded({ extended: true }));
 
 
 function inputurl(req,res){
-  console.log(req.body.url);
-  if (is_url(req.body.url)){
-  dns.lookup(req.body.url,(error)=>{
-    if (error){
-      return res.json({error:'invalid url'});
-    }
-    else{
+  // dns.lookup(req.body.url,(error)=>{
+  //   if (error){
+  //     return res.json({error:'invalid url'});
+  //   }
+  //   else{
+  //     myurls.push({original_url:req.body.url, short_url:shortnums[myurls.length]});
+  //     //console.log(myurls[myurls.length-1]);
+  //     return res.json(myurls[myurls.length-1]);
+  //   }
+  // });
+
+  try{
+      var url=new URL(req.body.url);
       myurls.push({original_url:req.body.url, short_url:shortnums[myurls.length]});
-      //console.log(myurls[myurls.length-1]);
       return res.json(myurls[myurls.length-1]);
-    }
-  });
   }
-  else{
+  catch(err){
+    console.log(err);
     return res.json({error:'invalid url'});
   }
 
+  
 }
 
 
