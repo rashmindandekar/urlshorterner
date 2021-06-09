@@ -70,7 +70,7 @@ function inputurl(req,res){
       return res.json(myurls[myurls.length-1]);
   }
   catch(err){
-    console.log(err);
+    //console.log(err);
     return res.json({error:'invalid url'});
   }
 
@@ -82,7 +82,7 @@ app.post('/api/shorturl',inputurl);
 app.get('/api/shorturl/:shorturl', (req,res)=>{
   var myshorturl=req.params.shorturl;
   var redirecturl=getlongfromshort(myurls,myshorturl);
-  console.log(redirecturl);
+  //console.log(redirecturl);
   //res.json({out:myshorturl});
   res.redirect(redirecturl);
 });
